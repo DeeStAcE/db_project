@@ -31,13 +31,22 @@ class Message:
             return True
 
     @staticmethod
-    def load_all_messages(cursor):
-        query = sql.SQL('''
-                SELECT id, text, from_id, to_id, creation_date
-                FROM {table_name};
-            ''').format(table_name=sql.Identifier('Message'))
+    def load_all_messages(cursor, user_id=None):
+        if user_id:
+            query = sql.SQL('''
+                    SELECT id, text, from_id, to_id, creation_date
+                    FROM {table_name}
+                    WHERE to_id = %s;
+                ''').format(table_name=sql.Identifier('Message'))
+            cursor.execute(query, (user_id,))
+        else:
+            query = sql.SQL('''
+                    SELECT id, text, from_id, to_id, creation_date
+                    FROM {table_name};
+                ''').format(table_name=sql.Identifier('Message'))
+            cursor.execute(query)
+
         messages = []
-        cursor.execute(query)
         for row in cursor.fetchall():
             id_, text, from_id, to_id, creation_data = row
             loaded_message = Message(from_id, to_id, text)

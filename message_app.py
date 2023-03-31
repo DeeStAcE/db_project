@@ -4,7 +4,7 @@ from message_class import Message
 from user_class import User
 from password_app import check_password
 
-from psycopg2.errors import UniqueViolation, OperationalError
+from psycopg2.errors import OperationalError
 from psycopg2 import connect
 
 parser = argparse.ArgumentParser()
@@ -18,7 +18,7 @@ args = parser.parse_args()
 
 
 def list_messages(cursor_, username, password):
-    user = User(username, password)
+    user = User.load_user_by_username(cursor_, username)
     if not user:
         print('User does not exist')
     else:
@@ -27,11 +27,11 @@ def list_messages(cursor_, username, password):
         else:
             messages_ = Message.load_all_messages(cursor_, user.id)
             for message_ in messages_:
-                print(f'Addressee: {message_.to_id}, date: {message_.creation_data}, text:\n{message_.text}')
+                print(f'Sender: {message_.from_id}, date: {message_.creation_data}, text:\n{message_.text}')
 
 
 def send_message(cursor_, username, password, to_user, text):
-    user = User(username, password)
+    user = User.load_user_by_username(cursor_, username)
     if not user:
         print('User does not exist')
     else:

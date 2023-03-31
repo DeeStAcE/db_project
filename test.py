@@ -26,7 +26,7 @@ except OperationalError as error:
 # user4.save_to_db(cursor)
 
 
-# text1 = Message(12, 13, 'witam kolege')
-# text1.save_to_db(cursor)
+text1 = Message(14, 16, 'witam kolege')
+text1.save_to_db(cursor)
 
 # print(Message.load_all_messages(cursor))

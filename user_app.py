@@ -47,7 +47,7 @@ def delete_user(cursor_, username, password):
 
 
 def edit_user(cursor_, username, password, new_pass):
-    user = User(username, password)
+    user = User.load_user_by_username(cursor_, username)
     if not user:
         print('User does not exist')
     elif not check_password(password, user.hashed_password):

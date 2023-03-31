@@ -16,7 +16,7 @@ query_create_table_user = sql.SQL('''
 query_create_table_message = sql.SQL('''
     CREATE TABLE {table_name} (
     id SERIAL PRIMARY KEY,
-    creation_date TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+    creation_date TIMESTAMP,
     text VARCHAR(255),
     from_id INT,
     to_id INT,
